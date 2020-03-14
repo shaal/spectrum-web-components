@@ -32,7 +32,7 @@
         "docs:start": "yarn docs:analyze && run-p watch:css build:watch \"docs:ts -w\" docs:start:watch",
         "docs:start:watch": "node ./tasks/watch-documentation.js",
         "docs:ts": "tsc --build documentation/tsconfig.json",
-        "get-ready": "yarn build:clear-cache && run-p process-icons process-spectrum && yarn build",
+        "get-ready": "yarn build:clear-cache && run-p process-icons process-spectrum testing-library && yarn build",
         "icons": "node ./scripts/process-icons.js && pretty-quick --pattern \"packages/**/*.svg.ts\"",
         "icons:ui": "lerna run --scope @spectrum-web-components/icons-ui build",
         "icons:workflow": "lerna run --scope @spectrum-web-components/icons-workflow build",
@@ -69,6 +69,7 @@
         "storybook:stories:build": "tsc --build .storybook/tsconfig.json",
         "storybook:stories:watch": "tsc --build .storybook/tsconfig.json -w",
         "test": "yarn test:focus unit",
+        "testing-library": "cd projects/testing-library__dom && yarn build",
         "test:bench": "node test/benchmark/cli.cjs",
         "test:build": "tsc --build test/tsconfig-test.json",
         "test:build:plugins": "tsc --build test/tsconfig-plugins.json",
@@ -214,7 +215,8 @@
         "yargs": "^16.2.0"
     },
     "resolutions": {
-        "cssnano/**/postcss-calc": "7.0.0"
+        "cssnano/**/postcss-calc": "7.0.0",
+        "@web/**/rollup": "2.51.0"
     },
     "workspaces": [
         "packages/*",
