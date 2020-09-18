@@ -23,9 +23,6 @@ THIS FILE IS MACHINE GENERATED. DO NOT EDIT */
         --spectrum-accordion-item-padding-x,
         var(--spectrum-global-dimension-size-225)
     );
-}
-:host([dir='rtl']) #indicator {
-    /* [dir=rtl] .spectrum-Accordion-itemIndicator */
     transform: matrix(-1, 0, 0, 1, 0, 0);
 }
 #indicator {
@@ -291,7 +288,7 @@ THIS FILE IS MACHINE GENERATED. DO NOT EDIT */
 }
 :host([open]) #header:hover {
     /* .spectrum-Accordion-item.is-open .spectrum-Accordion-itemHeader:hover */
-    background-color: transparent;
+    background-color: initial;
 }
 :host([disabled]) #header,
 :host([disabled]) #header:focus-visible,
@@ -303,7 +300,7 @@ THIS FILE IS MACHINE GENERATED. DO NOT EDIT */
         --spectrum-accordion-text-color-disabled,
         var(--spectrum-global-color-gray-500)
     );
-    background-color: transparent;
+    background-color: initial;
 }
 :host([disabled]) #header + #indicator {
     /* .spectrum-Accordion-item.is-disabled .spectrum-Accordion-itemHeader+.spectrum-Accordion-itemIndicator */

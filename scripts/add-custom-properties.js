@@ -25,7 +25,7 @@ async function main() {
         const customElementJson = JSON.parse(customElementJsonString);
         customElementJson.tags.map((tag) => {
             const varsPath = tag.path
-                .replace('./../', '')
+                .replace('./../../', '')
                 .replace(/sp-[a-z-]*\.d\.ts/, 'src/spectrum-vars.json');
             try {
                 const vars = fs.readFileSync(varsPath, 'utf8');
