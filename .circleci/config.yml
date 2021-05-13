@@ -8,7 +8,7 @@ executors:
 parameters:
     current_golden_images_hash:
         type: string
-        default: b1e4f25ac1f15bd3bdd818025090e30007364e6b
+        default: 0554ff441f90dcd6d701374681586f3b2ef66c72
 commands:
     downstream:
         steps:
@@ -43,7 +43,7 @@ commands:
                   name: Count baseline images
                   command: find test/visual/screenshots-baseline -type f | wc -l > count_start.txt
             - run: |
-                  yarn test:ci --config web-test-runner.config.ci.js --group vrt-<< parameters.regression_color >>-<< parameters.regression_scale >>-<< parameters.regression_dir >>
+                  yarn test:ci --config web-test-runner.config.vrt.js --group vrt-<< parameters.regression_color >>-<< parameters.regression_scale >>-<< parameters.regression_dir >>
             # store results and artifacts before rearranging things for the new cache.
             - store_test_results:
                   path: /root/project/results/
