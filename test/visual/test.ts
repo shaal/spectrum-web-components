@@ -10,12 +10,12 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import { elementUpdated, fixture, html, waitUntil } from '@open-wc/testing';
+import { elementUpdated, fixture, waitUntil } from '@open-wc/testing';
 import { visualDiff } from '@web/test-runner-visual-regression';
 import '@spectrum-web-components/story-decorator/sp-story-decorator.js';
 import * as stories from './story-imports.js';
 import { StoryDecorator } from '@spectrum-web-components/story-decorator/src/StoryDecorator';
-import { TemplateResult } from '@spectrum-web-components/base';
+import { TemplateResult, html } from '@spectrum-web-components/base';
 import { render } from 'lit-html';
 
 const wrap = () => html`
@@ -51,7 +51,7 @@ describe('Visual Regressions', () => {
                             html`
                                 ${tests[story](args)}
                             `;
-                        let storyResult = decoratedStory();
+                        let storyResult = ((decoratedStory as unknown) as () => TemplateResult)();
                         if (
                             testsDefault.decorators &&
                             testsDefault.decorators.length
@@ -73,6 +73,7 @@ describe('Visual Regressions', () => {
                             'Wait for decorator to become ready...',
                             { timeout: 10000 }
                         );
+                        await 0;
                         await visualDiff(
                             test,
                             `${color} - ${scale} - ${dir} - ${packageStories} - ${story}`
