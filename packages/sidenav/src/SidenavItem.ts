@@ -19,13 +19,14 @@ import {
     ifDefined,
 } from '@spectrum-web-components/base';
 import { LikeAnchor } from '@spectrum-web-components/shared/src/like-anchor.js';
-import { Focusable } from '@spectrum-web-components/shared';
+import { Focusable } from '@spectrum-web-components/shared/src/focusable.js';
+import { ObserveSlotText } from '@spectrum-web-components/shared/src/observe-slot-text.js';
 
 import { SidenavSelectDetail, SideNav } from './Sidenav.js';
 
 import sidenavItemStyles from './sidenav-item.css.js';
 
-export class SideNavItem extends LikeAnchor(Focusable) {
+export class SideNavItem extends ObserveSlotText(LikeAnchor(Focusable), '') {
     public static get styles(): CSSResultArray {
         return [sidenavItemStyles];
     }
@@ -121,14 +122,24 @@ export class SideNavItem extends LikeAnchor(Focusable) {
                 )}
             >
                 <slot name="icon"></slot>
-                ${this.label}
+                ${this.slotHasContent ? html`` : this.label}
+                <slot @slotchange=${this.manageTextObservedSlot}>
+                    ${this.label}
+                </slot>
             </a>
             ${this.expanded
                 ? html`
-                      <slot></slot>
+                      <slot name="descendant"></slot>
                   `
                 : html``}
         `;
+    }
+
+    protected firstUpdated(changes: PropertyValues): void {
+        super.firstUpdated(changes);
+        if (!this.hasAttribute('slot')) {
+            this.slot = 'descendant';
+        }
     }
 
     protected updated(changes: PropertyValues): void {

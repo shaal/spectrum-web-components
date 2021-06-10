@@ -63,3 +63,7 @@ governing permissions and limitations under the License.
             )
     );
 }
+
+a ::slotted(sp-sidenav-item) {
+    display: none;
+}
