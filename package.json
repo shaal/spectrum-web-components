@@ -137,6 +137,7 @@
         "common-tags": "^1.8.0",
         "css-loader": "^5.2.0",
         "cssnano": "^4.1.10",
+        "debounce": "^1.2.1",
         "deepmerge": "^4.0.0",
         "element-closest": "^3.0.1",
         "eslint": "^7.21.0",

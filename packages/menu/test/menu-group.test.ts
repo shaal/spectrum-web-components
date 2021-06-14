@@ -12,6 +12,7 @@ governing permissions and limitations under the License.
 import '../sp-menu-group.js';
 import '../sp-menu.js';
 import '../sp-menu-item.js';
+import '../sp-menu-divider.js';
 import { Menu, MenuItem, MenuGroup, MenuChildItem } from '../';
 import {
     fixture,
@@ -45,7 +46,6 @@ describe('Menu group', () => {
                 </sp-menu>
             `
         );
-
         await waitUntil(
             () => managedItems(el).length === 5,
             'expected menu group to manage 5 children'
@@ -292,27 +292,26 @@ describe('Menu group', () => {
         );
         expect(el.value).to.equal('First--SubInherit2');
         expect(el.selectedItems.length).to.equal(2);
-
         inheritGroup.setAttribute('selects', 'single');
 
         await elementUpdated(inheritGroup);
+        await elementUpdated(el);
 
-        await waitUntil(
-            () => managedItems(inheritGroup).length === 4,
-            'expected new single sub-group to manage 4 items'
-        );
+        await waitUntil(() => {
+            const items = managedItems(inheritGroup).length;
+            return items === 4;
+        }, 'expected new single sub-group to manage 4 items');
 
         await waitUntil(
             () => managedItems(el).length === 2,
             'expected outer menu to manage 2 items and no longer inherit'
         );
-
+        expect(inheritGroup.value).to.equal('SubInherit2');
+        expect(inheritGroup.selectedItems.length).to.equal(1);
+        expect(el.value).to.equal('First');
         expect(inheritItem1.getAttribute('role')).to.equal('menuitemradio');
         expect(inheritItem2.getAttribute('role')).to.equal('menuitemradio');
         expect(subInheritItem1.getAttribute('role')).to.equal('menuitemradio');
         expect(subInheritItem2.getAttribute('role')).to.equal('menuitemradio');
-        expect(el.value).to.equal('First');
-        //expect(inheritGroup.value).to.equal('SubInherit2')
-        expect(inheritGroup.selectedItems.length).to.equal(1);
     });
 });

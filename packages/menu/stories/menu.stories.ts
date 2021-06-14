@@ -167,7 +167,7 @@ export const MenuGroupSelects = (): TemplateResult => {
         <sp-popover open style="width: 200px;">
             <sp-menu selects="single">
                 <sp-menu-group>
-                    <span slot="header">Minneapolis</span>
+                    <span slot="header">One of these</span>
                     <sp-menu-item>Camden</sp-menu-item>
                     <sp-menu-item>Cedar Riverside</sp-menu-item>
                     <sp-menu-item>Downtown</sp-menu-item>
@@ -175,19 +175,19 @@ export const MenuGroupSelects = (): TemplateResult => {
                     <sp-menu-item>Uptown</sp-menu-item>
                 </sp-menu-group>
                 <sp-menu-group>
-                    <span slot="header">St. Paul</span>
+                    <span slot="header">Or of these</span>
                     <sp-menu-item>Lowertown</sp-menu-item>
                     <sp-menu-item>Grand Ave</sp-menu-item>
                 </sp-menu-group>
                 <sp-menu-group selects="multiple">
-                    <span slot="header">San Francisco</span>
+                    <span slot="header">Many of these</span>
                     <sp-menu-item>Financial District</sp-menu-item>
                     <sp-menu-item>South of Market</sp-menu-item>
                     <sp-menu-item>North Beach</sp-menu-item>
                 </sp-menu-group>
                 <sp-menu-divider></sp-menu-divider>
                 <sp-menu-group selects="single">
-                    <span slot="header">Oakland</span>
+                    <span slot="header">One of these</span>
                     <sp-menu-item>City Center</sp-menu-item>
                     <sp-menu-item disabled>Jack London Square</sp-menu-item>
                     <sp-menu-item selected>
@@ -221,7 +221,7 @@ export const MenuGroupSelectsMultiple = (): TemplateResult => {
         <sp-popover open style="width: 200px;">
             <sp-menu selects="multiple">
                 <sp-menu-group>
-                    <span slot="header">Minneapolis</span>
+                    <span slot="header">Many of these</span>
                     <sp-menu-item>Camden</sp-menu-item>
                     <sp-menu-item>Cedar Riverside</sp-menu-item>
                     <sp-menu-item>Downtown</sp-menu-item>
@@ -229,19 +229,19 @@ export const MenuGroupSelectsMultiple = (): TemplateResult => {
                     <sp-menu-item>Uptown</sp-menu-item>
                 </sp-menu-group>
                 <sp-menu-group>
-                    <span slot="header">St. Paul</span>
+                    <span slot="header">And these, too</span>
                     <sp-menu-item>Lowertown</sp-menu-item>
                     <sp-menu-item>Grand Ave</sp-menu-item>
                 </sp-menu-group>
                 <sp-menu-group selects="none">
-                    <span slot="header">San Francisco</span>
+                    <span slot="header">None of these</span>
                     <sp-menu-item>Financial District</sp-menu-item>
                     <sp-menu-item>South of Market</sp-menu-item>
                     <sp-menu-item>North Beach</sp-menu-item>
                 </sp-menu-group>
                 <sp-menu-divider></sp-menu-divider>
                 <sp-menu-group selects="single">
-                    <span slot="header">Oakland</span>
+                    <span slot="header">One of these</span>
                     <sp-menu-item>City Center</sp-menu-item>
                     <sp-menu-item disabled>Jack London Square</sp-menu-item>
                     <sp-menu-item selected>
