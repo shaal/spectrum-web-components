@@ -304,8 +304,18 @@ export class NumberField extends TextfieldBase {
     }
 
     protected onInput(): void {
-        const value = this.convertValueToNumber(this.inputElement.value);
-        this._value = this.validateInput(value);
+        if (this.numberParser.isValidPartialNumber(this.inputElement.value)) {
+            const value = this.convertValueToNumber(this.inputElement.value);
+            this._value = this.validateInput(value);
+            return;
+        }
+        const selectionStart = this.inputElement.selectionStart as number;
+        const currentLength = this.inputElement.value.length;
+        const previousLength = this.formattedValue.length;
+        const nextSelectStart =
+            selectionStart - (currentLength - previousLength);
+        this.inputElement.value = this.formattedValue;
+        this.inputElement.setSelectionRange(nextSelectStart, nextSelectStart);
     }
 
     private validateInput(value: number): number {

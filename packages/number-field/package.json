@@ -44,7 +44,7 @@
         "lit-html"
     ],
     "dependencies": {
-        "@internationalized/number": "^3.0.0",
+        "@internationalized/number": "^3.0.1",
         "@spectrum-web-components/action-button": "^0.5.2",
         "@spectrum-web-components/base": "^0.4.4",
         "@spectrum-web-components/icon": "^0.9.7",
