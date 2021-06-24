@@ -20,7 +20,7 @@ import {
     TemplateResult,
 } from '@spectrum-web-components/base';
 import { reparentChildren } from '@spectrum-web-components/shared';
-import { Color, Scale } from '@spectrum-web-components/theme';
+import { Color, Flavor, Scale } from '@spectrum-web-components/theme';
 import styles from './active-overlay.css.js';
 import {
     OverlayOpenDetail,
@@ -153,6 +153,7 @@ export class ActiveOverlay extends SpectrumElement {
         color?: Color;
         scale?: Scale;
         lang?: string;
+        flavor?: Flavor;
     } = {};
     @property({ attribute: false })
     public receivesFocus?: 'auto';
@@ -477,9 +478,10 @@ export class ActiveOverlay extends SpectrumElement {
     }
 
     public renderTheme(content: TemplateResult): TemplateResult {
-        const { color, scale, lang } = this.theme;
+        const { color, scale, lang, flavor } = this.theme;
         return html`
             <sp-theme
+                flavor=${ifDefined(flavor)}
                 color=${ifDefined(color)}
                 scale=${ifDefined(scale)}
                 lang=${ifDefined(lang)}

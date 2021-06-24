@@ -73,6 +73,7 @@
     },
     "devDependencies": {
         "@spectrum-css/commons": "beta",
+        "@spectrum-css/expressvars": "beta",
         "@spectrum-css/typography": "beta",
         "@spectrum-css/vars": "beta"
     },
