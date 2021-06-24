@@ -77,6 +77,10 @@ export class HandleController implements Controller {
         return result;
     }
 
+    public get size(): number {
+        return this.handles.size;
+    }
+
     public inputForHandle(handle: SliderHandle): HTMLInputElement | undefined {
         if (this.handles.has(handle.handleName)) {
             const { input } = this.getHandleElements(handle);
@@ -233,7 +237,7 @@ export class HandleController implements Controller {
 
     private get boundingClientRect(): DOMRect {
         if (!this._boundingClientRect) {
-            this._boundingClientRect = this.host.getBoundingClientRect();
+            this._boundingClientRect = this.host.controls.getBoundingClientRect();
         }
         return this._boundingClientRect;
     }

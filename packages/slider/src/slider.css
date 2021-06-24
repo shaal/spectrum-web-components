@@ -34,6 +34,43 @@ governing permissions and limitations under the License.
     outline: 0;
 }
 
+:host([editable]) {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+        'label .'
+        'slider number';
+}
+
+:host([editable]) #labelContainer {
+    grid-area: label;
+}
+
+:host([editable]) #labelContainer + div {
+    grid-area: slider;
+}
+
+:host([editable]) sp-number-field {
+    grid-area: number;
+
+    --spectrum-stepper-width: var(
+        --spectrum-slider-editable-number-field-width,
+        60px
+    );
+}
+
+:host([editable][dir='ltr']) sp-number-field {
+    margin-left: var(--spectrum-global-dimension-size-200);
+}
+
+:host([editable][dir='rtl']) sp-number-field {
+    margin-right: var(--spectrum-global-dimension-size-200);
+}
+
+:host([editable]) output {
+    opacity: 0;
+}
+
 :host([disabled]) {
     pointer-events: none;
 }

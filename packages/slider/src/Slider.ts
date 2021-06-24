@@ -25,6 +25,7 @@ import {
 import sliderStyles from './slider.css.js';
 import { ObserveSlotText } from '@spectrum-web-components/shared/src/observe-slot-text.js';
 import { StyleInfo } from 'lit-html/directives/style-map';
+import type { NumberField } from '@spectrum-web-components/number-field';
 import { HandleController, HandleValueDictionary } from './HandleController.js';
 import { SliderHandle } from './SliderHandle.js';
 
@@ -36,6 +37,9 @@ export class Slider extends ObserveSlotText(SliderHandle, '') {
     }
 
     public handleController: HandleController = new HandleController(this);
+
+    @property({ type: Boolean, reflect: true })
+    public editable = false;
 
     @property()
     public type = '';
@@ -112,6 +116,9 @@ export class Slider extends ObserveSlotText(SliderHandle, '') {
     @query('#label')
     public labelEl!: HTMLLabelElement;
 
+    @query('#controls')
+    public controls!: HTMLDivElement;
+
     public get numberFormat(): Intl.NumberFormat {
         return this.getNumberFormat();
     }
@@ -123,6 +130,21 @@ export class Slider extends ObserveSlotText(SliderHandle, '') {
     protected render(): TemplateResult {
         return html`
             ${this.renderLabel()} ${this.renderTrack()}
+            ${this.editable
+                ? html`
+                      <sp-number-field
+                          .formatOptions=${this.formatOptions || {}}
+                          aria-labelledby="label"
+                          min=${this.min}
+                          max=${this.max}
+                          step=${this.step}
+                          value=${this.value}
+                          hide-stepper
+                          @input=${this.handleNumberInput}
+                          @change=${this.handleNumberChange}
+                      ></sp-number-field>
+                  `
+                : html``}
         `;
     }
 
@@ -139,6 +161,15 @@ export class Slider extends ObserveSlotText(SliderHandle, '') {
     public update(changedProperties: Map<string, boolean>): void {
         this.handleController.hostUpdate();
         super.update(changedProperties);
+        if (changedProperties.has('editable') && this.editable) {
+            if (this.handleController.size > 1) {
+                this.editable = false;
+            } else {
+                import(
+                    '@spectrum-web-components/number-field/sp-number-field.js'
+                );
+            }
+        }
     }
 
     private renderLabel(): TemplateResult {
@@ -249,7 +280,7 @@ export class Slider extends ObserveSlotText(SliderHandle, '') {
         ];
 
         return html`
-            <div @pointerdown=${this.handleTrackPointerdown}>
+            <div @pointerdown=${this.handleTrackPointerdown}">
                 <div id="controls">
                     ${repeat(
                         trackItems,
@@ -271,6 +302,22 @@ export class Slider extends ObserveSlotText(SliderHandle, '') {
             return;
         }
         this.handleController.beginTrackDrag(event);
+    }
+
+    private handleNumberInput(event: Event & { target: NumberField }): void {
+        const { value } = event.target;
+        if (!isNaN(value)) {
+            this.value = value;
+        }
+    }
+
+    private handleNumberChange(event: Event & { target: NumberField }): void {
+        const { value } = event.target;
+        if (isNaN(value)) {
+            this.value = 0;
+        } else {
+            this.value = value;
+        }
     }
 
     private trackSegmentStyles(start: number, end: number): StyleInfo {

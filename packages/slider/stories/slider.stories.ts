@@ -87,6 +87,32 @@ export const Default = (args: StoryArgs): TemplateResult => {
     `;
 };
 
+export const editable = (args: StoryArgs): TemplateResult => {
+    const handleEvent = (event: Event): void => {
+        const target = event.target as Slider;
+        if (target.value != null) {
+            action(event.type)(target.value.toString());
+        }
+    };
+    return html`
+        <div style="width: 500px; margin: 12px 20px;">
+            <sp-slider
+                editable
+                max="1"
+                min="0"
+                value=".5"
+                step="0.01"
+                @input=${handleEvent}
+                @change=${handleEvent}
+                .formatOptions=${{ style: 'percent' }}
+                ...=${spreadProps(args)}
+            >
+                Opacity
+            </sp-slider>
+        </div>
+    `;
+};
+
 export const Gradient = (args: StoryArgs): TemplateResult => {
     const handleEvent = (event: Event): void => {
         const target = event.target as Slider;
