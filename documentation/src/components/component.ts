@@ -44,27 +44,57 @@ enum TabValue {
     Examples = 'examples',
 }
 
-interface JsDocTagParsed {
-    name?: string;
-    attribute?: string;
-    type?: string;
-    optional?: boolean;
-    default?: string;
-    description?: string;
-}
+// interface JsDocTagParsed {
+//     name?: string;
+//     attribute?: string;
+//     type?: string;
+//     optional?: boolean;
+//     default?: string;
+//     description?: string;
+// }
 
-type ParsedTagArray = JsDocTagParsed[];
+// type ParsedTagArray = JsDocTagParsed[];
 
 type TagType = {
-    name: string;
+    tagName: string;
     description?: string;
-    properties?: ParsedTagArray;
-    slots?: ParsedTagArray;
-    events?: ParsedTagArray;
-    cssProperties?: ParsedTagArray;
+    attributes: TagAttributeType[];
+    slots: SlotType[];
+    events: EventType[];
+    cssProperties: CssCustomProperty[];
 };
 
-function sortByName(a: JsDocTagParsed, b: JsDocTagParsed) {
+type TagAttributeType = {
+    fieldName: string;
+    name: string;
+    description: string;
+    default?: string;
+    type?: {
+        text?: string;
+    };
+};
+
+type SlotType = {
+    description: string;
+    name: string;
+};
+
+type EventType = {
+    name: string;
+    description: string;
+    privacy: string;
+};
+
+type CssCustomProperty = {
+    name: string;
+    default?: string;
+    summary?: string;
+    description?: string;
+};
+
+type CEMItemType = SlotType | TagAttributeType | EventType | CssCustomProperty;
+
+function sortByName(a: CEMItemType, b: CEMItemType) {
     if (!a.name || !b.name) {
         return 0;
     }
@@ -79,10 +109,13 @@ function sortByName(a: JsDocTagParsed, b: JsDocTagParsed) {
 
 function buildTable(
     title: string,
-    rowData: ParsedTagArray,
+    rowData: CEMItemType[],
     headings: string[],
-    cells: ((property: JsDocTagParsed) => TemplateResult)[]
+    cells: ((property: CEMItemType) => TemplateResult)[]
 ): TemplateResult {
+    if (!rowData.length) {
+        return html``;
+    }
     return html`
         <div class="headerContainer">
             <h2 class="spectrum-Heading spectrum-Heading--sizeM">${title}</h2>
@@ -141,11 +174,22 @@ class ComponentElement extends RouteComponent {
     }
 
     public get apiDocs(): TagType | undefined {
-        const prefixedEl = docs.tags.find(
-            (el) =>
-                el.name === `sp-${this.componentName}` ||
-                (this.location && el.name === this.location.params.component)
-        ) as TagType;
+        let prefixedEl: TagType | undefined;
+        (docs as {
+            modules: {
+                declarations: TagType[];
+            }[];
+        }).modules.find((jsModule) => {
+            prefixedEl = jsModule.declarations.find((jsDeclarations) => {
+                return (
+                    jsDeclarations.tagName === `sp-${this.componentName}` ||
+                    (this.location &&
+                        jsDeclarations.tagName ===
+                            this.location.params.component)
+                );
+            });
+            return prefixedEl || false;
+        });
         return prefixedEl || undefined;
     }
 
@@ -196,7 +240,7 @@ class ComponentElement extends RouteComponent {
                             class="spectrum-Heading spectrum-Heading--sizeXXL spectrum-Heading--serif"
                             id="component-name"
                         >
-                            ${APIdocs ? APIdocs.name : this.componentName}
+                            ${APIdocs ? APIdocs.tagName : this.componentName}
                         </h1>
                     </div>
                     ${APIdocs && componentDocs
@@ -228,31 +272,46 @@ class ComponentElement extends RouteComponent {
         if (!tag) return html``;
         return html`
             <p>${tag.description}</p>
-            ${tag.properties && tag.properties.length
+            ${tag.attributes && tag.attributes.length
                 ? buildTable(
-                      'Properties',
-                      tag.properties,
-                      ['Name', 'Attribute', 'Type', 'Default', 'Description'],
+                      'Attributes and Properties',
+                      tag.attributes,
                       [
-                          (property) =>
+                          'Property',
+                          'Attribute',
+                          'Type',
+                          'Default',
+                          'Description',
+                      ],
+                      [
+                          (attribute) =>
                               html`
-                                  <code>${property.name}</code>
+                                  <code>
+                                      ${(attribute as TagAttributeType)
+                                          .fieldName}
+                                  </code>
                               `,
-                          (property) =>
+                          (attribute) =>
                               html`
-                                  <code>${property.attribute || ''}</code>
+                                  <code>${attribute.name || ''}</code>
                               `,
-                          (property) =>
+                          (attribute) =>
                               html`
-                                  <code>${property.type || ''}</code>
+                                  <code>
+                                      ${(attribute as TagAttributeType).type
+                                          ?.text || ''}
+                                  </code>
                               `,
-                          (property) =>
+                          (attribute) =>
                               html`
-                                  <code>${property.default || ''}</code>
+                                  <code>
+                                      ${(attribute as TagAttributeType)
+                                          .default || ''}
+                                  </code>
                               `,
-                          (property) =>
+                          (attribute) =>
                               html`
-                                  ${property.description || ''}
+                                  ${attribute.description || ''}
                               `,
                       ]
                   )
@@ -265,7 +324,9 @@ class ComponentElement extends RouteComponent {
                       [
                           (property) =>
                               html`
-                                  <code>${property.name}</code>
+                                  <code>
+                                      ${property.name || 'default slot'}
+                                  </code>
                               `,
                           (property) =>
                               html`
@@ -277,7 +338,7 @@ class ComponentElement extends RouteComponent {
             ${tag.events && tag.events.length
                 ? buildTable(
                       'Events',
-                      tag.events,
+                      tag.events.filter((tag) => tag.privacy !== 'private'),
                       ['Name', 'Description'],
                       [
                           (property) =>
@@ -303,7 +364,10 @@ class ComponentElement extends RouteComponent {
                               `,
                           (property) =>
                               html`
-                                  <code>${property.default || '""'}</code>
+                                  <code>
+                                      ${(property as CssCustomProperty)
+                                          .default || '""'}
+                                  </code>
                               `,
                       ]
                   )
