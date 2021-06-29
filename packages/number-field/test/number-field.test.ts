@@ -668,7 +668,7 @@ describe('NumberField', () => {
         expect(el.value).to.equal(2222);
     });
     describe('manages `value` with `formatOptions`', () => {
-        it('manages decimals', async () => {
+        xit('manages decimals', async () => {
             let thrownError!: Error;
             try {
                 const el = await getElFrom(decimals({ value: 1.333333 }));
@@ -722,7 +722,7 @@ describe('NumberField', () => {
             expect(el.valueAsString).to.equal('234.21');
             expect(el.value).to.equal(234.21);
         });
-        it('manages units', async () => {
+        xit('manages units', async () => {
             let thrownError!: Error;
             try {
                 const el = await getElFrom(units({ value: 17 }));
