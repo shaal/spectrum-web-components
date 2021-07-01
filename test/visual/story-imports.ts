@@ -83,6 +83,7 @@ export * as SplitViewStories from '../../packages/split-view/stories/split-view.
 export * as StatusLightStories from '../../packages/status-light/stories/status-light.stories.js';
 export * as SwitchStories from '../../packages/switch/stories/switch.stories.js';
 export * as TabsStories from '../../packages/tabs/stories/tabs.stories.js';
+export * as TagsSizesStories from '../../packages/tags/stories/tags-sizes.stories.js';
 export * as TagsStories from '../../packages/tags/stories/tags.stories.js';
 export * as TextareaStories from '../../packages/textfield/stories/textarea.stories.js';
 export * as TextfieldStories from '../../packages/textfield/stories/textfield.stories.js';
