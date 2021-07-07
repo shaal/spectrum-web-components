@@ -126,7 +126,7 @@ jobs:
             - run: yarn analyze
             - run:
                   name: Run tests
-                  command: yarn test:ci --config web-test-runner.config.ci.js --group unit --coverage
+                  command: yarn test:changed
             - store_test_results:
                   path: /root/project/results/
             - store_artifacts:
